@@ -7,7 +7,7 @@ $dbuser = 'root';
 $dbpassword = '';
 $dbname = 'milkmonitoring';
 $db = mysqli_connect($host, $dbuser, $dbpassword) or
-        die('Unable to connect. Check your connection parameters.');
+  die('Unable to connect. Check your connection parameters.');
 mysqli_select_db($db, $dbname) or die(mysqli_error($db));
 ?>
 <!DOCTYPE html>
@@ -28,40 +28,75 @@ mysqli_select_db($db, $dbname) or die(mysqli_error($db));
   </style>
 </head>
 <?php
- ?>
+?>
 
 <body>
 
   <h1 class="text-succes text-center">Milk Monitoring System </h1>
-  <div class="row m-4 p-4">
-    <div class="col-md-4">
-      <canvas id="myChart" width="20" height="20"></canvas>
+  <div class="container">
+    <div class="row m-4 p-4">
+      <div class="col-md-4">
+        <canvas id="myChart" width="20" height="20"></canvas>
+      </div>
+      <div class="col-md-4">
+        <canvas id="myChart1" width="20" height="20"></canvas>
+      </div>
+      <div class="col-md-4">
+        <canvas id="myChart2" width="20" height="20"></canvas>
+      </div>
     </div>
-    <div class="col-md-4">
-      <canvas id="myChart1" width="20" height="20"></canvas>
-    </div>
-    <div class="col-md-4">
-      <canvas id="myChart2" width="20" height="20"></canvas>
-    </div>
-  </div>
+    <div class="row">
+      <div class="col-md-12">
+        <h2 class="m-4 p-4 text-center">Record taken by sensors</h2>
+        <table class="table table-bordered table-striped table-hover">
+          <thead>
+            <tr>
+              <th scope="col">No</th>
+              <th scope="col">Ph Level</th>
+              <th scope="col">Temperature Level</th>
+              <th scope="col">Gas Level</th>
+              <th scope="col">Taken Time</th>
+            </tr>
+          </thead>
+    
+
   <?php
-  
-     $sql ="SELECT * FROM milkcontent";
 
-      $result = mysqli_query($db,$sql);
-      $chart_data="";
-      while ($row = mysqli_fetch_array($result)) { 
+  $sql = "SELECT * FROM milkcontent order by id desc limit 1000";
 
-         $ph_level[]  = $row['Ph_level']  ;
-         $temp_level[] = $row['Temperature_level'];
-         $conduct_level[]=$row['Conductivity_level'];
-         $time[]=$row['createtime'];
-        //  echo $row['Ph_level'];
-     }
-  
+  $result = mysqli_query($db, $sql);
+  $chart_data = "";
+  $i=0;
+  while ($row = mysqli_fetch_array($result)) {
+
+    $ph_level[]  = $row['Ph_level'];
+    $temp_level[] = $row['Temperature_level'];
+    $conduct_level[] = $row['Conductivity_level'];
+    $time[] = $row['createtime'];
+    $i++;
+    ?>
+    
+   
+          <tbody>
+            <tr>
+              <td><?php echo$i;?></td>
+              <td><?=$row['Ph_level']?></td>
+              <td><?=$row['Temperature_level']?></td>
+              <td><?=$row['Conductivity_level']?></td>
+              <td><?=$row['createtime']?></td>
+            </tr>  
+          </tbody>
+      
+    
+    <?php
+    //  echo $row['Ph_level'];
+  }
+
   ?>
-
-
+  </table>
+      </div>
+    </div>
+</div>
 
 
 

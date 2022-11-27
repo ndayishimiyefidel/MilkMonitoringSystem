@@ -12,13 +12,14 @@ class sendDataToServer extends dbConnection
   //saving data to databse
   function senddata($ph_level, $temp_level, $conduct_level)
   {
-    $query = "insert into milkcontent set PH_level='" . $ph_level . "',Temperature_level='" . $temp_level . "',Conductivity_level='" . $conduct_level . "'";
+    $query = "insert into milkcontent set Ph_level='" . $ph_level . "',Temperature_level='" . $temp_level . "',Conductivity_level='" . $conduct_level . "'";
     $result = mysqli_query($this->link, $query) or die('could not run query' . $query);
   }
 }
-if ($_GET['PH_level'] != '' && $_GET['Temperature_level'] != '' && $_GET['Conductivity_level']) {
-  $sendDataToServer = new sendDataToServer($_GET['PH_level'], $_GET['Temperature_level'], $_GET['Conductivity_level']);
-  echo $_GET['PH_level'];
+if ($_GET['Ph_level'] != '' && $_GET['Temperature_level'] != '' && $_GET['Conductivity_level']) {
+  $sendDataToServer = new sendDataToServer($_GET['Ph_level'], $_GET['Temperature_level'], $_GET['Conductivity_level']);
+  // echo $_GET['PH_level'];
+  echo "<script> document.location = '../MilkMonitoringSystem/index.php'; </script>";
 
 }
 
