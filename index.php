@@ -207,7 +207,7 @@ mysqli_select_db($db, $dbname) or die(mysqli_error($db));
       data: {
         labels: <?php echo json_encode($time); ?>,
         datasets: [{
-          label: 'Conductivity Level',
+          label: 'Gas Level',
           data: <?php echo json_encode($conduct_level); ?>,
           backgroundColor: 'rgba(100, 0, 100, 1)',
         }]
