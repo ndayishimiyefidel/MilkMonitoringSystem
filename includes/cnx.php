@@ -1,9 +1,11 @@
 <?php 
-class dbConnection{
-     
-function connect(){
-$this->link=mysqli_connect("localhost","root","") or die("Could not connect to the Database Server");
-$fb=mysqli_select_db($this->link,"milkmonitoring") or die("Could not select the database");
-    }
-
-}
+session_start();
+error_reporting(1);
+//Local connection
+$host = 'localhost';
+$dbuser = 'root';
+$dbpassword = '';
+$dbname = 'milkmonitoring';
+$db = mysqli_connect($host, $dbuser, $dbpassword) or
+  die('Unable to connect. Check your connection parameters.');
+mysqli_select_db($db, $dbname) or die(mysqli_error($db));

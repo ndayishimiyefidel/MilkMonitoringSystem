@@ -36,15 +36,35 @@ mysqli_select_db($db, $dbname) or die(mysqli_error($db));
   <div class="container">
     <div class="row m-4 p-4">
       <div class="col-md-4">
-        <canvas id="myChart" width="20" height="20"></canvas>
+        <canvas id="myChart" width="100" height="100"></canvas>
       </div>
       <div class="col-md-4">
-        <canvas id="myChart1" width="20" height="20"></canvas>
+        <canvas id="myChart1" width="100" height="100"></canvas>
       </div>
       <div class="col-md-4">
-        <canvas id="myChart2" width="20" height="20"></canvas>
+        <canvas id="myChart2" width="100" height="100"></canvas>
       </div>
     </div>
+
+    <div class="row">
+        <div class="col-md-12 " style="height:50%;">
+            <h2>Permitted Milk quality for Drinking</h2>
+            <div id="temperature">
+            <?php
+                $query = "SELECT* FROM milkcontent";
+                $result = mysqli_query($db, $query);
+                $chart_data = '';
+                while($row = mysqli_fetch_array($result)){
+                //echo $row['Gas'];
+                $chart_data .= "{date:'".$row["createtime"]."', Temperature:".$row["Temperature_level"].", Gas:".$row["Conductivity_level"].", PH:".$row["Ph_level"]."}, ";
+              }
+                $chart_data = substr ($chart_data, 0, -2);
+                ?>
+
+            </div>
+          </div>
+      </div>
+
     <div class="row">
       <div class="col-md-12">
         <h2 class="m-4 p-4 text-center">Record taken by sensors</h2>
@@ -65,7 +85,6 @@ mysqli_select_db($db, $dbname) or die(mysqli_error($db));
   $sql = "SELECT * FROM milkcontent order by id desc limit 1000";
 
   $result = mysqli_query($db, $sql);
-  $chart_data = "";
   $i=0;
   while ($row = mysqli_fetch_array($result)) {
 
@@ -86,11 +105,10 @@ mysqli_select_db($db, $dbname) or die(mysqli_error($db));
               <td><?=$row['createtime']?></td>
             </tr>  
           </tbody>
-      
-    
     <?php
-    //  echo $row['Ph_level'];
+   
   }
+
 
   ?>
   </table>
@@ -98,13 +116,12 @@ mysqli_select_db($db, $dbname) or die(mysqli_error($db));
     </div>
 </div>
 
-
-
-
-
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+ <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
   <script type="text/javascript">
     var ctx = document.getElementById("myChart").getContext('2d');
     var dataValues = [12, 19, 3, 5];
@@ -219,6 +236,16 @@ mysqli_select_db($db, $dbname) or die(mysqli_error($db));
       }
     });
   </script>
+  <script>
+Morris.Bar({
+element:'temperature',
+data:[<?php echo $chart_data ;?>],
+xkey:'date',
+ykeys:['Temperature','Gas','PH'],
+labels:['Temperature','Gas','PH'],
+hideHover:'auto'
+});
+</script>
 </body>
 
 </html>
